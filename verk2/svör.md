@@ -1,4 +1,4 @@
--:Verkefni 2:-
+## Verkefni 2
 
 1. ECMAScript er skriftumál gert til að staðla JavaScript en frá útgáfu upprunalegu útgáfunni hefur það einnig
    verið útfært með JScript og ActionScript.
@@ -24,7 +24,48 @@
    
 6. Munurinn á let og var er eins og Local og Global breytur í öðrum málum svo í flestum tilfellum ertu frekar að nota
    let yfir var nema þú viljit sérstaklega Global breytu.
+
+      ```javascript
+      if (!false){
+          let variable = 1;
+      }
+      console.log(variable); 
+      // skilar villu um að 'variable' sé ekki defined
+      // ---------------------------------------
+      if (!false){
+          var variable = 1;
+      }
+      console.log(variable);
+      // skilar '1'
+      ```
    
 7. 
+      ```javascript
+      function sum(var1, var2){
+          return var1 + var2;
+      }
+      
+      // -----------------------------------
+      
+      var sum = (var1, var2) => var1 + var2;
+      
+      // -----------------------------------
+      
+      var sum = function (var1, var2) {
+          return var1 + var2;
+      }
+      ```
 
-8. 
+8. Use strict eru strangari reglur yfir hvernig kóði á að vera og vegna þess er léttara að fá villur.
+
+9. Það er vegna þess hvernig Javascript virkar, það er allt fært í efstu línu (ef hann getur það, annars bara eins ofarlega og hann kemst) við keyrslu kóða
+
+10. Neðra fallið yfirskrifar það efra svo það ætti alltaf að skila tölunni 8.
+
+11. Javascript býst bara við að það eigi að vera 'var' fyrir framan og bætir því við fyrir þig sem er ekki alltaf gott ef þú villt ekki hafa þessa breytu 'global' eins og 'var' er.
+
+12. Hann skilar stengnum "Hello World" og svigarnir eru þarna til að keyra fallið í sýnu eigin 'scope' semsagt breytur innaní fallinu hafa ekki áhrif á 'global scope' kóðans, þóg þetta er nokkuð useless núna í ECMAScript 2015 þar sem 'let' er komið.
+
+13. það er 'svæðið' sem breytan er nothæf í
+
+14. Call stack local gagnagrunnur geymir alla beina sem á að keyra
