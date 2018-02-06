@@ -35,6 +35,7 @@
         }
         some_function(){
           console.log("called 'some_function()'")
+          console.log(this.var1)
           // some code here
         }
         
