@@ -28,4 +28,4 @@
  5. stopPropagation(): Þetta stoppar önnur events frá því að verða skráð eftir að þetta hefur verið kallað.
     preventDefault(): Kemur í veg fyrir að venjulegi eventinn gerist t.d. right click á síðum o.s.fv.
     
-6.  [Linkur að "quiz"](https://helgisteinarr.com/js/v7)
+6.  [Linkur að "quiz"](http://helgisteinarr.com/js/v7)
