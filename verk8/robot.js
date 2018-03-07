@@ -49,70 +49,57 @@ class VillageState {  // Klasi sem geymir stöðu forritsins og hefur move() fal
     }
 }
 
-let first = new VillageState(
-"Post Office",
-[{place: "Post Office", address: "Alice's House"}]
-);
-let next = first.move("Alice's House");
-
-console.log(next.place);
-// → Alice's House
-console.log(next.parcels);
-// → []
-console.log(first.place);
-// → Post Office
-
-function runRobot(state, robot, memory) {
-    for (let turn = 0;; turn++) {
-        if (state.parcels.length == 0) {
+function runRobot(state, robot, memory) {  // Fall sem keyrir forritið og tekur inn random state og robot fall fyrir mismunandi robot gerðir
+    for (let turn = 0;; turn++) {  // loopa fyrir hvert turn
+        if (state.parcels.length == 0) {  // Athugar hvort búið er að skila öllum pökkum og ef svo er þá skrifar það hversu mörg turns það tók
         console.log(`Done in ${turn} turns`);
-        break;
+        break;  // Breakar úr loopuni þar sem búið er að skila öllum pökkunum
         }
-        let action = robot(state, memory);
-        state = state.move(action.direction);
-        memory = action.memory;
-        console.log(`Moved to ${action.direction}`);
+        let action = robot(state, memory);  // Setur robotinn valinn fyrir þetta run í breytu til að vinna með
+        state = state.move(action.direction);  // færir robotinn með move fallinu í VillageState
+        memory = action.memory;  // Fær minnið sem gefið er robotnum
+        console.log(`Moved to ${action.direction}`);  // Skráir í console hvert hann færði sig
     }
 }
 
-function randomPick(array) {
-    let choice = Math.floor(Math.random() * array.length);
-    return array[choice];
+function randomPick(array) {  // Fall sem tekur inn array og skilar random element úr því
+    let choice = Math.floor(Math.random() * array.length);  // Math aðferðir sem velja hvaða hlut í arraynu á að skila
+    return array[choice];  // skilar hlutnum sem var valinn
 }
 
-function randomRobot(state) {
-    return {direction: randomPick(roadGraph[state.place])};
+function randomRobot(state) {  // Robot fall sem velur random stað í hvert sinn þangað til hann er búinn að skil öllum pökkum
+    return {direction: randomPick(roadGraph[state.place])};  // Skilar áttinni sem randomPick gefur honum úr listanum
 }
 
-VillageState.random = function(parcelCount = 5) {
-    let parcels = [];
-    for (let i = 0; i < parcelCount; i++) {
-        let address = randomPick(Object.keys(roadGraph));
-        let place;
-        do {
+VillageState.random = function(parcelCount = 5) {  // Fall geymt í breytunni random undir VilalgeState
+    let parcels = [];  // Array sem heldur utan um pakkana
+    for (let i = 0; i < parcelCount; i++) {  // loopa sem loopar jafn oft og fljöldi pakka
+        let address = randomPick(Object.keys(roadGraph));   // Velur random áfangastað
+        let place;  // Býr til tóma breytu 'place'
+        do { // Finnur nýjan stað fyrir place ef place og address eru það sama 
             place = randomPick(Object.keys(roadGraph));
         } while (place == address);
-        parcels.push({place, address});
+        parcels.push({place, address});  // Bætir leiðinni sem hann þarf að fara í parcel arrayið
     }
-    return new VillageState("Post Office", parcels);
+    return new VillageState("Post Office", parcels);  // Skilar nýju VillageState
 };
 
-const mailRoute = [
+const mailRoute = [  // Fast array sem routeRobot notar til að vinna.
     "Alice's House", "Cabin", "Alice's House", "Bob's House",
     "Town Hall", "Daria's House", "Ernie's House",
     "Grete's House", "Shop", "Grete's House", "Farm",
     "Marketplace", "Post Office"
 ];
 
-function routeRobot(state, memory) {
-    if (memory.length == 0) {
+function routeRobot(state, memory) {  // Robot sem þarf fyrir skilgreyndar leyðir til að vinna.
+    if (memory.length == 0) {  // athugar ef ekkert er í minninu og ef svo er setur hann mailRoute í minni
         memory = mailRoute;
     }
-    return {direction: memory[0], memory: memory.slice(1)};
+    return {direction: memory[0], memory: memory.slice(1)};  // Skilar átt farið í og nýja memory
 }
 
-function findRoute(graph, from, to) {
-    let work = [{at: from, route: []}];
+function findRoute(graph, from, to) {  // Fall sem goalOrientedRobot notar
+    let work = [{at: from, route: []}];  // 
     for (let i = 0; i < work.length; i++) {
         let {at, route} = work[i];
         for (let place of graph[at]) {
@@ -124,16 +111,16 @@ function findRoute(graph, from, to) {
     }
 }
 
-function goalOrientedRobot({place, parcels}, route) {
-    if (route.length == 0) {
-        let parcel = parcels[0];
-        if (parcel.place != place) {
+function goalOrientedRobot({place, parcels}, route) {  // Robot sem finnur bestu leiðina til að taka í hvert sinn
+    if (route.length == 0) {  // Ef ekkert route er
+        let parcel = parcels[0];  // Tekur fyrsta pakkann
+        if (parcel.place != place) {  // Athugar hvort hann sé á réttum stað eða ekki
             route = findRoute(roadGraph, place, parcel.place);
         } else {
             route = findRoute(roadGraph, place, parcel.address);
         }
     }
-    return {direction: route[0], memory: route.slice(1)};
+    return {direction: route[0], memory: route.slice(1)};  // Skilar átt farið í og updated memory
 }
 
-runRobot(VillageState.random(), goalOrientedRobot, []);
+runRobot(VillageState.random(), goalOrientedRobot, []);  // Keyrir forritið með goalOrientedRobotinum
