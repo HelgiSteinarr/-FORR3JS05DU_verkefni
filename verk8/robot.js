@@ -41,10 +41,10 @@ class VillageState {  // Klasi sem geymir stöðu forritsins og hefur move() fal
             return this;  // Ef þetta er ekki einn áfangastaðana þá skilar hann bara þessu instance af VillageState til að nota næst
         } else {  // Ef þetta er einn þeirra
         let parcels = this.parcels.map(p => { 
-            if (p.place != this.place) return p;
-            return {place: destination, address: p.address};
-        }).filter(p => p.place != p.address);
-        return new VillageState(destination, parcels);
+            if (p.place != this.place) return p;  // Athugar hvort staðurinn sem pakkinn á að fara á sé sá sem hann er á
+            return {place: destination, address: p.address};  // Skilar hvert á að fara
+        }).filter(p => p.place != p.address); 
+        return new VillageState(destination, parcels);  // Skilar nýju instance af VillageState þegar hann er búinn að vinna til að halda áfram
         }
     }
 }
